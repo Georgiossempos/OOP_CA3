@@ -4,6 +4,7 @@ from daft_scraper.search.options import (
     PriceOption, BedOption
 )
 from daft_scraper.search.options_location import LocationsOption, Location
+import csv
 
 cityLocations = {
   "dublin 1": Location.DUBLIN_1_DUBLIN,
@@ -51,5 +52,14 @@ def sortResultsByPrice(listings):
  #   noDuplicates = list(dict.fromkeys(sortedResults))
   #  return noDuplicates
 
+listings = getAllApartmentRentalsInLocation(city)
+sortedListingsByPrice = sortResultsByPrice(listings)
+#print(apartment.title, "|", apartment.price, "|", apartment.url)
 
 # then save this small list into a CSV file
+with open('apartmentsInDublin.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(["Address", "Price", "Daft URL"])
+    # add data to file
+    for apartment in sortedListingsByPrice:
+        writer.writerow([apartment.title, apartment.price, apartment.url])
